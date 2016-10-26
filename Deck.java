@@ -12,7 +12,6 @@ package loveletter;
 public class Deck {
 
     // card types
-
     public static final int PRINCESS = 8;
     public static final int COUNTESS = 7;
     public static final int KING = 6;

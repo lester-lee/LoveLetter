@@ -12,15 +12,19 @@ import java.util.ArrayList;
  * @author Lesterr
  */
 public class LoveLetter {
+    
+    public static void pr(Object line){
+        System.out.println(line);
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Deck d = new Deck();
-        ArrayList<Player> p = new ArrayList<Player>(2);
-        Table t = new Table(d,p);
-        
+        Table t = new Table(new Deck(), 2);
+        while (!t.gameOver){
+            t.takeTurn();
+        }        
     }
     
 }
