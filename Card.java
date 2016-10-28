@@ -67,9 +67,9 @@ public class Card {
             case 1:
                 return "GUARD";
             case 2:
-                return "BARON";
-            case 3:
                 return "PRIEST";
+            case 3:
+                return "BARON";
             case 4:
                 return "HANDMAIDEN";
             case 5:

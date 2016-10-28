@@ -12,7 +12,7 @@ import static loveletter.LoveLetter.pr;
 
 /**
  *
- * @author Lesterr
+ * @author Lester Lee
  */
 public class Table {
     private Deck deck;
@@ -31,15 +31,23 @@ public class Table {
     }
     
     public void takeTurn(){   
-        pr(this);
-        Player p = players.get(curPlayer);
-        p.draw(deck.draw());
-        pr("Which card would Player #" + (curPlayer + 1) + " like to play? Your options are:");
-        Card c = askPlayer(p);
-        
-        //takeAction(playedCard);
-       curPlayer++;
-       if (curPlayer >= players.size()) curPlayer = 0;
+        pr(this);                                       // print the table
+        Player p = players.get(curPlayer);              // get current player
+        Card draw = deck.draw();                        // draw card
+        if (draw == null){                              // if last card, game is over
+            gameOver = true;
+            return;
+        }              
+        p.draw(draw);
+        pr("Which card would Player #" + p.number + " like to play? Your options are:");
+        Card playedCard = askPlayer(p);
+        takeAction(playedCard);
+        if (players.size() == 1){                       // last one standing
+            gameOver = true;
+            return;
+        }
+        curPlayer++;
+        if (curPlayer >= players.size()) curPlayer = 0;
     }
     
     private Card askPlayer(Player p){
@@ -56,8 +64,87 @@ public class Table {
         return playedCard;
     }
     
+    private void takeAction(Card c){
+        Player curP = players.get(curPlayer);
+        switch (c.getType()){
+            case 1:
+                guardAction(curP);
+                break;
+            case 2:
+                priestAction(curP);
+                break;
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            default:
+                break;
+        }
+    }
+    
+    /* Card Actions */
+    
+    private boolean playedMaiden(Player p){
+        Card c = p.lastPlayed;
+        return (c == null) ? false : c.getType() == 4;
+    }
+    
+    private Player maidenCheck(Player p){
+        int pnum = p.whichPlayer(players.size());
+        Player target = players.get(pnum);
+        boolean hasMaiden = playedMaiden(target);               // checking for HANDMAIDEN
+        while (hasMaiden){
+            pr("That player just played HANDMAIDEN and is immune!");
+            pnum = p.whichPlayer(players.size());
+            hasMaiden = playedMaiden(players.get(pnum));
+            target = players.get(pnum);
+        }
+        if (pnum == p.number-1) return null;                    // choosing yourself
+        return target;
+    }
+    
+    private void guardAction(Player p){
+        Player target = maidenCheck(p);
+        if (target == null) return;                             // choosing yourself
+        int guess = p.guardGuess();
+        Card hand = target.hand();
+        if (hand.getType() == guess){
+            pr("Your guess was correct! Player #" + target.number + " no longer has a chance.");
+            players.remove(target.number-1);
+        }else{
+            pr("Your guess was incorrect...\n");
+        }
+    }
+    
+    private void priestAction(Player p){
+        Player target = maidenCheck(p);
+        if (target == null) return;
+        Card hand = target.hand();
+        pr("Their card is: " + hand);
+    }
+    
+    public void endGame(){
+        int winner = 0;
+        int max = 0;
+        Card c = null;
+        for (int i = 0; i < players.size(); i++){
+            Player p = players.get(i);
+            int hand = p.hand().getType();
+            if (hand > max){
+                max = hand;
+                winner = p.number;
+                c = p.hand();
+            }
+        }
+        pr("The winner is Player #" + winner + "!");
+        pr("They had " + c + "!");
+    }
+    
     public String toString(){
-        String res = "Table: Currently Player #" + (curPlayer + 1) + "'s turn \n";
+        Player pl = players.get(curPlayer);
+        String res = "Table: Currently Player #" + pl.number + "'s turn \n";
         for (Player p : players){
             res += p + "\n";
         }

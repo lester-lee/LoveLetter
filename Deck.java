@@ -56,7 +56,8 @@ public class Deck {
     }
     
     public Card draw(){
-        return deck[index++];
+        Card res = (index == 16) ? null : deck[index++];
+        return res;
     }
     
     public Card missingCard(){
