@@ -11,16 +11,6 @@ package loveletter;
  */
 public class Card {    
     
-    // card types
-    public static final int PRINCESS = 8;
-    public static final int COUNTESS = 7;
-    public static final int KING = 6;
-    public static final int PRINCE = 5;
-    public static final int HANDMAIDEN = 4;
-    public static final int BARON = 3;
-    public static final int PRIEST = 2;
-    public static final int GUARD = 1;
-    
     private int type;
     private String info;
     
@@ -62,6 +52,7 @@ public class Card {
         return info;
     }
     
+    @Override
     public String toString(){
         switch(type){
             case 1:

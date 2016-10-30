@@ -54,7 +54,7 @@ public class Deck {
             deck[j] = temp;
         }
     }
-    
+     
     public Card draw(){
         Card res = (index == 16) ? null : deck[index++];
         return res;

@@ -36,6 +36,15 @@ public class Player {
         return hand;
     }
     
+    public void setHand(Card c){
+        hand = c;
+    }
+    
+    public void discard(Card newCard){
+        playedCards.add(hand);
+        hand = newCard;
+    }
+    
     public void printOptions(){
         System.out.println("(0) " + hand + " (1) " + newCard + " (2) Get info about cards");
     }

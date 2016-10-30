@@ -21,7 +21,7 @@ public class LoveLetter {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Table t = new Table(new Deck(), 3);
+        Table t = new Table(new Deck(), 2);
         while (!t.gameOver){
             t.takeTurn();
         }        
