@@ -12,8 +12,8 @@ import java.util.ArrayList;
  * @author Lesterr
  */
 public class LoveLetter {
-    
-    public static void pr(Object line){
+
+    public static void pr(Object line) {
         System.out.println(line);
     }
 
@@ -21,11 +21,13 @@ public class LoveLetter {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Table t = new Table(new Deck(), 2);
-        while (!t.gameOver){
-            t.takeTurn();
-        }        
-        t.endGame();
+        for (int i = 0; i < 1000000; i++) {
+            Table t = new Table("r r");
+            while (!t.gameOver) {
+                t.takeTurn();
+            }
+            t.endGame();
+        }
     }
-    
+
 }
