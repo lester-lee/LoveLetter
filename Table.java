@@ -65,11 +65,10 @@ public class Table {
             return;
         }
         curPlayer++;                                    // cycle to next undefeated player
-        if (curPlayer >= players.size()) {
-            curPlayer = 0;
-        }
+        curPlayer %= players.size();
         while (defeated.contains(curPlayer)) {
-            curPlayer++;
+            curPlayer++;            
+            curPlayer %= players.size();
         }
     }
 

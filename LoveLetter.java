@@ -22,7 +22,7 @@ public class LoveLetter {
      */
     public static void main(String[] args) {
         for (int i = 0; i < 1000000; i++) {
-            Table t = new Table("r r");
+            Table t = new Table("r r r");
             while (!t.gameOver) {
                 t.takeTurn();
             }
