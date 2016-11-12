@@ -6,6 +6,7 @@
 package loveletter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import static loveletter.LoveLetter.pr;
 
@@ -16,16 +17,18 @@ import static loveletter.LoveLetter.pr;
 public class Table {
 
     private final Deck deck;
-    private final ArrayList<Player> players;
-    private int numPlayers;
+    final ArrayList<Player> players;
+    int numPlayers;
     private ArrayList<Integer> defeated;
     public int curPlayer;
-    public boolean gameOver;
+    public boolean gameOver;    
+    HashMap<Integer,Integer> cardCount;
 
     public Table(String s) {
         deck = new Deck();
         String[] list = s.split(" ");
         int n = list.length;
+        initCardCount();
         players = new ArrayList<Player>(n);
         defeated = new ArrayList<Integer>(n);
         curPlayer = 0;
@@ -39,6 +42,9 @@ public class Table {
                 case "r":
                     players.add(new RandomPlayer(i, deck.draw()));
                     break;
+                case "s":
+                    players.add(new SmartPlayer(i, deck.draw()));
+                    break;
                 default:
                     players.add(new HumanPlayer(i, deck.draw()));
                     break;
@@ -47,6 +53,19 @@ public class Table {
         }
     }
 
+    private void initCardCount(){        
+        cardCount = new HashMap<Integer,Integer>();
+        cardCount.put(1,5);
+        cardCount.put(2,2);
+        cardCount.put(3,2);
+        cardCount.put(4,2);
+        cardCount.put(5,2);
+        cardCount.put(6,1);
+        cardCount.put(7,1);
+        cardCount.put(8,1);
+        
+    }
+    
     public void takeTurn() {
         Player p = players.get(curPlayer);              // get current player
         if (p.type == "human") {
@@ -59,6 +78,8 @@ public class Table {
         }
         p.draw(draw);
         Card playedCard = askPlayer(p);
+        int pctype = playedCard.getType();
+        cardCount.put(pctype,cardCount.get(pctype)-1);
         takeAction(playedCard);
         if (defeated.size() == numPlayers - 1) {         // last one standing
             gameOver = true;
@@ -96,6 +117,7 @@ public class Table {
 
     private void takeAction(Card c) {
         Player curP = players.get(curPlayer);
+        //pr("Player# " + curP.number + " : " + c.getType());
         switch (c.getType()) {
             case 1:
                 guardAction(curP);
@@ -116,6 +138,7 @@ public class Table {
                 kingAction(curP);
                 break;
             case 8:
+                //pr("Player #" + curP.number + " discarded the Princess!.");
                 defeated.add(curP.number - 1);
                 break;
             default:
@@ -202,7 +225,7 @@ public class Table {
                 pr("You were victorious! Player #" + target.number + " no longer has a chance.");
             }
             defeated.add(target.number - 1);
-            target.play(0, this);
+            target.play(0, this);                // reveal their card by playing hand
         } else if (p2 > p1) {
             if (p.type == "human") {
                 pr("You were defeated and no longer have a chance...");

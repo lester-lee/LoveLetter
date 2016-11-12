@@ -43,7 +43,7 @@ public class Deck {
             deck[i] = new Card(PRINCE);
         deck[13] = new Card(KING);
         deck[14] = new Card(COUNTESS);
-        deck[15] = new Card(PRIEST);
+        deck[15] = new Card(PRINCESS);
     }
     
     private void shuffle() {
@@ -62,5 +62,13 @@ public class Deck {
     
     public Card missingCard(){
         return deck[0];
+    }
+    
+    public String toString(){
+        String res = "";
+        for (int i = 0; i < 16; i++){
+            res += deck[i] + " ";
+        }
+        return res;
     }
 }

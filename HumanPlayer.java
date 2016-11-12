@@ -5,7 +5,7 @@
  */
 package loveletter;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.Scanner;
 import static loveletter.LoveLetter.pr;
 /**
@@ -43,6 +43,10 @@ public class HumanPlayer extends Player{
     }
     
     public Card play(int action, Table t){
+        // check for countess
+        if ((hand.getType() == 7 && (newCard.getType() == 5 || newCard.getType() == 6)) ||
+            (newCard.getType() == 7 && (hand.getType() == 5 || hand.getType() == 6)))
+            action = hand.getType() == 7 ? HAND : NEWCARD;
         switch(action){
             case HAND:
                 playedCards.add(hand);

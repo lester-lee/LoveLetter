@@ -26,6 +26,9 @@ public abstract class Player {
         hand = c;
         number = i+1;
         playedCards = new ArrayList<Card>();
+        // effectively null cards prevents null exception errors
+        newCard = new Card(10);
+        lastPlayed = new Card(10);
     }
     
     public void draw(Card c){

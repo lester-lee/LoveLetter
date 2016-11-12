@@ -16,10 +16,10 @@ public class RandomPlayer extends Player {
 
     public RandomPlayer(int i, Card c) {
         super(i, c);
-        type="random";
-    }   
-    
-    public int whichPlayer(int numPlayers){
+        type = "random";
+    }
+
+    public int whichPlayer(int numPlayers) {
         Random r = new Random();
         return r.nextInt(numPlayers);
     }
@@ -30,19 +30,26 @@ public class RandomPlayer extends Player {
         //pr("Their guess is " + res);
         return 2 + r.nextInt(7);
     }
-    
-    public Card play(int action, Table t){
+
+    public Card play(int action, Table t) {
         Random r = new Random();
         int choice = r.nextInt(2);
-        if (action == 0) choice = action; // forced to play hand 
-        switch (choice){
-            case 0:
+        // check for countess
+        if ((hand.getType() == 7 && (newCard.getType() == 5 || newCard.getType() == 6))
+                || (newCard.getType() == 7 && (hand.getType() == 5 || hand.getType() == 6))) {
+            choice = hand.getType() == 7 ? HAND : NEWCARD;
+        }
+        if (action == 0) {
+            choice = action; // forced to play hand         
+        }
+        switch (choice) {
+            case HAND:
                 playedCards.add(hand);
                 Card temp = hand;
                 hand = newCard;
                 lastPlayed = temp;
                 return temp;
-            case 1:
+            case NEWCARD:
                 playedCards.add(newCard);
                 lastPlayed = newCard;
                 return newCard;
@@ -50,8 +57,8 @@ public class RandomPlayer extends Player {
                 return null;
         }
     }
-    
-    public void addInfo(Player p, Card c){
+
+    public void addInfo(Player p, Card c) {
         return;
     }
 }
