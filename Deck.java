@@ -1,13 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This code is available under the CC BY-SA 4.0 License
+ * (Creative Commons Attribution-ShareAlike 4.0 License)
+ * More information can be found at:
+ * https://creativecommons.org/licenses/by-sa/4.0/
  */
 package loveletter;
 
 /**
  *
- * @author Lesterr
+ * @author Lester Lee
+ * A Deck is shuffled array of Cards.
+ * The first card in the array is set aside.
  */
 public class Deck {
 

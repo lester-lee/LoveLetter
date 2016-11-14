@@ -1,7 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This code is available under the CC BY-SA 4.0 License
+ * (Creative Commons Attribution-ShareAlike 4.0 License)
+ * More information can be found at:
+ * https://creativecommons.org/licenses/by-sa/4.0/
  */
 package loveletter;
 
@@ -13,6 +14,9 @@ import static loveletter.LoveLetter.pr;
 /**
  *
  * @author Lester Lee
+ * A Table keeps track of the players in the game,
+ * the Deck being used in the game, and handles the effects
+ * of playing each Card.
  */
 public class Table {
 
@@ -21,8 +25,8 @@ public class Table {
     int numPlayers;
     private ArrayList<Integer> defeated;
     public int curPlayer;
-    public boolean gameOver;    
-    HashMap<Integer,Integer> cardCount;
+    public boolean gameOver;
+    HashMap<Integer, Integer> cardCount;
 
     public Table(String s) {
         deck = new Deck();
@@ -53,19 +57,18 @@ public class Table {
         }
     }
 
-    private void initCardCount(){        
-        cardCount = new HashMap<Integer,Integer>();
-        cardCount.put(1,5);
-        cardCount.put(2,2);
-        cardCount.put(3,2);
-        cardCount.put(4,2);
-        cardCount.put(5,2);
-        cardCount.put(6,1);
-        cardCount.put(7,1);
-        cardCount.put(8,1);
-        
+    private void initCardCount() {
+        cardCount = new HashMap<Integer, Integer>();
+        cardCount.put(1, 5);
+        cardCount.put(2, 2);
+        cardCount.put(3, 2);
+        cardCount.put(4, 2);
+        cardCount.put(5, 2);
+        cardCount.put(6, 1);
+        cardCount.put(7, 1);
+        cardCount.put(8, 1);
     }
-    
+
     public void takeTurn() {
         Player p = players.get(curPlayer);              // get current player
         if (p.type == "human") {
@@ -78,8 +81,8 @@ public class Table {
         }
         p.draw(draw);
         Card playedCard = askPlayer(p);
-        int pctype = playedCard.getType();
-        cardCount.put(pctype,cardCount.get(pctype)-1);
+        int pctype = playedCard.type;
+        cardCount.put(pctype, cardCount.get(pctype) - 1);
         takeAction(playedCard);
         if (defeated.size() == numPlayers - 1) {         // last one standing
             gameOver = true;
@@ -88,7 +91,7 @@ public class Table {
         curPlayer++;                                    // cycle to next undefeated player
         curPlayer %= players.size();
         while (defeated.contains(curPlayer)) {
-            curPlayer++;            
+            curPlayer++;
             curPlayer %= players.size();
         }
     }
@@ -117,8 +120,8 @@ public class Table {
 
     private void takeAction(Card c) {
         Player curP = players.get(curPlayer);
-        //pr("Player# " + curP.number + " : " + c.getType());
-        switch (c.getType()) {
+        //pr("Player# " + curP.number + " : " + c.type);
+        switch (c.type) {
             case 1:
                 guardAction(curP);
                 break;
@@ -149,7 +152,7 @@ public class Table {
     /* Card Actions */
     private boolean playedMaiden(Player p) {
         Card c = p.lastPlayed;
-        return (c == null) ? false : c.getType() == 4;
+        return (c == null) ? false : c.type == 4;
     }
 
     private Player validCheck(Player p) {
@@ -188,7 +191,7 @@ public class Table {
         }
         int guess = p.guardGuess();
         Card hand = target.hand();
-        if (hand.getType() == guess) {
+        if (hand.type == guess) {
             if (p.type == "human") {
                 pr("Your guess was correct! Player #" + target.number + " no longer has a chance.");
             }
@@ -206,10 +209,11 @@ public class Table {
             return;
         }
         Card hand = target.hand();
-        if (p.type != "human") {
-            p.addInfo(target, hand);
-        }else {
-            pr("Their card is: " + hand + "\n");           
+        if (p.type == "smart") {
+            ((SmartPlayer) p).addInfo(target, hand);
+        }
+        if (p.type == "human") {
+            pr("Their card is: " + hand + "\n");
         }
     }
 
@@ -218,8 +222,8 @@ public class Table {
         if (target == null) {
             return;
         }
-        int p1 = p.hand().getType();
-        int p2 = target.hand().getType();
+        int p1 = p.hand().type;
+        int p2 = target.hand().type;
         if (p1 > p2) {
             if (p.type == "human") {
                 pr("You were victorious! Player #" + target.number + " no longer has a chance.");
@@ -258,6 +262,9 @@ public class Table {
         }
         Card temp = p.hand();
         p.setHand(target.hand());
+        if (target.type == "smart") {
+            ((SmartPlayer) target).addInfo(p, target.hand());
+        }
         target.setHand(temp);
     }
 
@@ -268,7 +275,7 @@ public class Table {
         for (Player p : players) {
             Card h = p.hand();
             if (h != null) {
-                int hand = p.hand().getType();
+                int hand = p.hand().type;
                 if (hand > max && !defeated.contains(p.number - 1)) {
                     max = hand;
                     winner = p.number;
@@ -277,7 +284,7 @@ public class Table {
             }
         }
         pr("The winner is Player #" + winner + "!");
-        pr("They had " + c + "!");
+        //pr("They had " + c + "!");
     }
 
     @Override

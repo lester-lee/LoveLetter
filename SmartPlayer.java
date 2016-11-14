@@ -1,7 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This code is available under the CC BY-SA 4.0 License
+ * (Creative Commons Attribution-ShareAlike 4.0 License)
+ * More information can be found at:
+ * https://creativecommons.org/licenses/by-sa/4.0/
  */
 package loveletter;
 
@@ -11,15 +12,18 @@ import java.util.Random;
 
 /**
  *
- * @author Lesterr
+ * @author Lester Lee
+ * A SmartPlayer will keep track of which cards have been played,
+ * and make the best move according to available information.
+ * SmartPlayer prioritizes eliminating other players if possible.
  */
 public class SmartPlayer extends Player {
 
     // keep count of cards & who has what
-    private HashMap<Integer, Integer> cardCount;
-    private HashMap<Integer, Integer> playerCards;
-    private int playerGuess;
-    private int guardGuess;
+    HashMap<Integer, Integer> cardCount;
+    HashMap<Integer, Integer> playerCards;
+    int playerGuess;
+    int guardGuess;
 
     public SmartPlayer(int i, Card c) {
         super(i, c);
@@ -29,8 +33,8 @@ public class SmartPlayer extends Player {
         playerCards = new HashMap<Integer, Integer>();
     }
 
-    private boolean hasCard(int c) {
-        return hand.getType() == c || newCard.getType() == c;
+    boolean hasCard(int c) {
+        return hand.type == c || newCard.type == c;
     }
 
     public int whichPlayer(int numPlayers) {
@@ -51,10 +55,10 @@ public class SmartPlayer extends Player {
     }
 
     public void addInfo(Player p, Card c){
-        playerCards.put(p.number-1, c.getType());
+        playerCards.put(p.number-1, c.type);
     }
     
-    private int getHighestPlayer() {
+    int getHighestPlayer() {
         int max = Integer.MIN_VALUE;
         int pnum = -1;
         for (int p : playerCards.keySet()) {
@@ -66,8 +70,8 @@ public class SmartPlayer extends Player {
         return pnum;
     }
     
-    private int getLowestPlayer() {
-        int min = Math.min(hand.getType(),newCard.getType());
+    int getLowestPlayer() {
+        int min = Math.min(hand.type,newCard.type);
         int pnum = -1;
         for (int p : playerCards.keySet()) {
             if (playerCards.get(p) < min) {
@@ -78,14 +82,14 @@ public class SmartPlayer extends Player {
         return pnum;
     }
 
-    private void swapCards() {
+    void swapCards() {
         Card temp = hand;
         hand = newCard;
         newCard = temp;
     }
 
-    private Card playCard(int c) {
-        if (hand.getType() != c) {
+    Card playCard(int c) {
+        if (hand.type != c) {
             swapCards();
         }
         playedCards.add(hand);
@@ -95,7 +99,7 @@ public class SmartPlayer extends Player {
         return temp;
     }
     
-    private int findChanceCard(){
+    int findChanceCard(){
         Random r = new Random();
         int counter = 0;
         ArrayList<Integer> al = new ArrayList<Integer>();
@@ -109,7 +113,7 @@ public class SmartPlayer extends Player {
         return al.get(rand);
     }
     
-    private boolean hasPrincess(){
+    boolean hasPrincess(){
         for (int p : playerCards.keySet()){
             if (playerCards.get(p) == 8){
                 playerGuess = p;
@@ -119,7 +123,7 @@ public class SmartPlayer extends Player {
         return false;
     }
     
-    private int getUnknownPlayer(int max){
+    int getUnknownPlayer(int max){
         ArrayList<Integer> present = new ArrayList<Integer>(playerCards.keySet());
         ArrayList<Integer> all = new ArrayList<Integer>();
         for (int i = 0; i < max; i++)
@@ -129,10 +133,10 @@ public class SmartPlayer extends Player {
         return all.get(r.nextInt(all.size()));
     }
     
-    private void checkCards(Table t){
+    void checkCards(Table t){
         ArrayList<Integer> toRemove = new ArrayList<Integer>();
         for (int p : playerCards.keySet()){
-            if (t.players.get(p).lastPlayed.getType() == playerCards.get(p))
+            if (t.players.get(p).lastPlayed.type == playerCards.get(p))
                 toRemove.add(p);
         }
         for (int i : toRemove)
@@ -142,8 +146,8 @@ public class SmartPlayer extends Player {
     public Card play(int action, Table t) {
          // check for countess
         if (newCard != null) {
-            if ((hand.getType() == 7 && (newCard.getType() == 5 || newCard.getType() == 6)) ||
-                (newCard.getType() == 7 && (hand.getType() == 5 || hand.getType() == 6))) {
+            if ((hand.type == 7 && (newCard.type == 5 || newCard.type == 6)) ||
+                (newCard.type == 7 && (hand.type == 5 || hand.type == 6))) {
                 return playCard(7);
             }
         }
@@ -203,21 +207,21 @@ public class SmartPlayer extends Player {
         
         // if Princess, must not play
         if (hasCard(8)){
-            if (hand.getType() != 8) swapCards();
-            return playCard(newCard.getType());
+            if (hand.type != 8) swapCards();
+            return playCard(newCard.type);
         }
         
         // Only play Baron if chance of winning is likely
         if (hasCard(3)){
-            if (hand.getType() != 3) swapCards();
-            if (newCard.getType() >= 4)
-                return playCard(newCard.getType());
+            if (hand.type != 3) swapCards();
+            if (newCard.type >= 4)
+                return playCard(newCard.type);
         }
         
         // Play the lower card
-        if (hand.getType() > newCard.getType()) swapCards();
+        if (hand.type > newCard.type) swapCards();
         
-        return playCard(hand.getType());
+        return playCard(hand.type);
         
     }
 

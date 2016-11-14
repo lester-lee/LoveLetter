@@ -1,18 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This code is available under the CC BY-SA 4.0 License
+ * (Creative Commons Attribution-ShareAlike 4.0 License)
+ * More information can be found at:
+ * https://creativecommons.org/licenses/by-sa/4.0/
  */
 package loveletter;
 
 /**
  *
- * @author Lesterr
+ * @author Lester Lee
+ * A Card simply holds the LoveLetter rank (1-8)
+ * and an information String describing the card.
  */
 public class Card {    
     
-    private int type;
-    private String info;
+    int type;
+    String info;
     
     public Card(int t){
         type = t;
@@ -42,17 +45,8 @@ public class Card {
                 info = "(1) Lose if discarded";
                 break;
         }
-    }
+    }    
     
-    public int getType(){
-        return type;
-    }
-    
-    public String info(){
-        return info;
-    }
-    
-    @Override
     public String toString(){
         switch(type){
             case 1:

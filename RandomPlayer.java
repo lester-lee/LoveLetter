@@ -1,7 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This code is available under the CC BY-SA 4.0 License
+ * (Creative Commons Attribution-ShareAlike 4.0 License)
+ * More information can be found at:
+ * https://creativecommons.org/licenses/by-sa/4.0/
  */
 package loveletter;
 
@@ -10,7 +11,11 @@ import static loveletter.LoveLetter.pr;
 
 /**
  *
- * @author Lesterr
+ * @author Lester Lee
+ * A RandomPlayer randomly chooses:
+ * which player to use a card on
+ * which Card a player has when Guarding
+ * whether to play Hand or NewCard
  */
 public class RandomPlayer extends Player {
 
@@ -26,8 +31,6 @@ public class RandomPlayer extends Player {
 
     public int guardGuess() {
         Random r = new Random();
-        int res = 2 + r.nextInt(7);
-        //pr("Their guess is " + res);
         return 2 + r.nextInt(7);
     }
 
@@ -35,9 +38,9 @@ public class RandomPlayer extends Player {
         Random r = new Random();
         int choice = r.nextInt(2);
         // check for countess
-        if ((hand.getType() == 7 && (newCard.getType() == 5 || newCard.getType() == 6))
-                || (newCard.getType() == 7 && (hand.getType() == 5 || hand.getType() == 6))) {
-            choice = hand.getType() == 7 ? HAND : NEWCARD;
+        if ((hand.type == 7 && (newCard.type == 5 || newCard.type == 6))
+                || (newCard.type == 7 && (hand.type == 5 || hand.type == 6))) {
+            choice = hand.type == 7 ? HAND : NEWCARD;
         }
         if (action == 0) {
             choice = action; // forced to play hand         
@@ -56,9 +59,5 @@ public class RandomPlayer extends Player {
             default:
                 return null;
         }
-    }
-
-    public void addInfo(Player p, Card c) {
-        return;
     }
 }

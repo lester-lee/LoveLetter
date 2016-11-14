@@ -58,10 +58,6 @@ public abstract class Player {
     
     public abstract Card play(int action, Table t);
     
-    public void addInfo(Player p, Card c){
-        return;
-    }
-    
     public String toString(){
         String res = "Player #" + number + ": ";
         for (Card c : playedCards){

@@ -1,7 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This code is available under the CC BY-SA 4.0 License
+ * (Creative Commons Attribution-ShareAlike 4.0 License)
+ * More information can be found at:
+ * https://creativecommons.org/licenses/by-sa/4.0/
  */
 package loveletter;
 
@@ -9,7 +10,8 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Lesterr
+ * @author Lester Lee
+ * LoveLetter will automatically play a number of games.
  */
 public class LoveLetter {
 
@@ -21,8 +23,8 @@ public class LoveLetter {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        for (int i = 0; i < 1000000; i++) {
-            Table t = new Table("s r");
+        for (int i = 0; i < 100000; i++) {
+            Table t = new Table("s s");
             while (!t.gameOver) {
                 t.takeTurn();
             }
